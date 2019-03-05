@@ -1,6 +1,7 @@
 package com.example.nasserissou.bookitall;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,10 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        //check if user is already logged in
+        if(firebaseAuth.getCurrentUser() != null){
+            //profile activity starts here
+        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -87,10 +92,53 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     }
 
+    private void userLogin(){
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)){
+            //email is empty
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            //stopping function
+            return;
+
+        }
+
+        if (TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            //stopping function
+            return;
+        }
+
+        progressDialog.setMessage(" User logging in...");
+        progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+
+                        if (task.isSuccessful()){
+                            //stop last activity
+                            finish();
+                            //start the profile activity
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        }
+                    }
+                });
+
+
+    }
+
     //run function if on click
     public void onClick(View view){
         if (view == buttonRegister){
             registerUser();
+        }
+
+        if (view == textViewSignin){
+            userLogin();
         }
 
     }
