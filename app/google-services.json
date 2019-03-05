@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "152064031124",
+    "firebase_url": "https://bookitall-f255f.firebaseio.com",
+    "project_id": "bookitall-f255f",
+    "storage_bucket": "bookitall-f255f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152064031124:android:5c46a1b88b942b12",
+        "android_client_info": {
+          "package_name": "com.example.nasserissou.bookitall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152064031124-ld369ii9vmbuqam9vs7g5nin4kj9ln04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nasserissou.bookitall",
+            "certificate_hash": "898f34430dedc704d535957657a03243f7a678a5"
+          }
+        },
+        {
+          "client_id": "152064031124-33c8mp2h3t722pd9i2ojiadq29h3n2ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_fa5K9Mwclp6V192kyfiDrQZcnqKqEjk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152064031124-33c8mp2h3t722pd9i2ojiadq29h3n2ns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
