@@ -82,9 +82,11 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                     //we will start profile activity here
                     //right now just
                     Toast.makeText(LoginActivity.this, "User is registered", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
                 else {
                     Toast.makeText(LoginActivity.this, "could not register....please try again", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             }
         });
