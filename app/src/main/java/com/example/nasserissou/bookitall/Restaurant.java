@@ -2,6 +2,7 @@ package com.example.nasserissou.bookitall;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -119,10 +121,13 @@ public class Restaurant extends Fragment {
     }
 
     //my data container
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "RestaurantActivity";
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mTypes = new ArrayList<>();
+    private ArrayList<String> mDescriptions = new ArrayList<>();
+
 
     //recyclerView code
     private void initImageBitmaps(View rootView){
@@ -164,11 +169,29 @@ public class Restaurant extends Fragment {
     private void initRecyclerView(View rootView) {
         Log.d(TAG, "initRecyclerView: init recyclerview");
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mNames, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mImageUrls, mNames, mTypes, mDescriptions);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
+
+    private class DownloadFilesTask extends AsyncTask<URL, Void, Void> {
+
+        @Override
+        protected Void doInBackground(URL... urls) {
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+
+        }
+
+    }//end of asynctask
+
 
 
 
