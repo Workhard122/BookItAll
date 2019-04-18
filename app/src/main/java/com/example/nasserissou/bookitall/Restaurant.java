@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class Restaurant extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    View rootView;
 
     public Restaurant() {
         // Required empty public constructor
@@ -72,7 +76,7 @@ public class Restaurant extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
+        rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
         initImageBitmaps(rootView);
         return rootView;
 
@@ -175,10 +179,24 @@ public class Restaurant extends Fragment {
 
     }
 
-    private class DownloadFilesTask extends AsyncTask<URL, Void, Void> {
+    private class DownloadFilesTask extends AsyncTask<URL, Void, String> {
 
         @Override
-        protected Void doInBackground(URL... urls) {
+        protected String doInBackground(URL... urls) {
+            URL myUrl = urls[0];
+            String jsonString;
+            HttpHandler myhandler = new HttpHandler();
+            jsonString = myhandler.makeServiceCall(myUrl.toString());
+
+            try {
+                JSONObject parentObject = new JSONObject(jsonString);
+                JSONArray parentArray = parentObject.getJSONArray("movies");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
             return null;
         }
 
@@ -187,7 +205,7 @@ public class Restaurant extends Fragment {
         }
 
         protected void onPostExecute(Long result) {
-
+            initRecyclerView(rootView);
         }
 
     }//end of asynctask
@@ -195,4 +213,4 @@ public class Restaurant extends Fragment {
 
 
 
-}
+}//end of fragement

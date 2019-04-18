@@ -24,7 +24,8 @@ public class HttpHandler {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             //or try .connect() instead
-            conn.setRequestMethod("GET");
+            //conn.setRequestMethod("GET");
+            conn.connect();
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);
