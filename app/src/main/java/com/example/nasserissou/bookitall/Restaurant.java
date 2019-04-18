@@ -2,6 +2,7 @@ package com.example.nasserissou.bookitall;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -33,6 +38,7 @@ public class Restaurant extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    View rootView;
 
     public Restaurant() {
         // Required empty public constructor
@@ -70,7 +76,7 @@ public class Restaurant extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
+        rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
         initImageBitmaps(rootView);
         return rootView;
 
@@ -119,10 +125,13 @@ public class Restaurant extends Fragment {
     }
 
     //my data container
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "RestaurantActivity";
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mTypes = new ArrayList<>();
+    private ArrayList<String> mDescriptions = new ArrayList<>();
+
 
     //recyclerView code
     private void initImageBitmaps(View rootView){
@@ -164,12 +173,44 @@ public class Restaurant extends Fragment {
     private void initRecyclerView(View rootView) {
         Log.d(TAG, "initRecyclerView: init recyclerview");
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mNames, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mImageUrls, mNames, mTypes, mDescriptions);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 
+    private class DownloadFilesTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            URL myUrl = urls[0];
+            String jsonString;
+            HttpHandler myhandler = new HttpHandler();
+            jsonString = myhandler.makeServiceCall(myUrl.toString());
+
+            try {
+                JSONObject parentObject = new JSONObject(jsonString);
+                JSONArray parentArray = parentObject.getJSONArray("movies");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
-}
+
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        protected void onPostExecute(Long result) {
+            initRecyclerView(rootView);
+        }
+
+    }//end of asynctask
+
+
+
+
+}//end of fragement

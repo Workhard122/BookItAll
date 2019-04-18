@@ -22,12 +22,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<String> mImageNames = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<String> mTypes = new ArrayList<>();
+    private ArrayList<String> mDescriptions = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImages) {
-        this.mImageNames = mImageNames;
-        this.mImages = mImages;
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImages, ArrayList<String> mImageNames, ArrayList<String> mTypes, ArrayList<String> mDescriptions ) {
         this.mContext = mContext;
+        this.mImages = mImages;
+        this.mImageNames = mImageNames;
+        this.mTypes = mTypes;
+        this.mDescriptions = mDescriptions;
+
+
     }
 
     @NonNull
@@ -48,6 +54,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .into(holder.image);
 
         holder.imageName.setText(mImageNames.get(position));
+
+        holder.type.setText(mTypes.get(position));
+
+        holder.description.setText(mDescriptions.get(position));
+
+
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +84,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         CircleImageView image;
         TextView imageName;
+        TextView type;
+        TextView description;
         RelativeLayout parentLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             imageName = itemView.findViewById(R.id.image_name);
+            type = itemView.findViewById(R.id.type);
+            description = itemView.findViewById(R.id.description);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         };
 
