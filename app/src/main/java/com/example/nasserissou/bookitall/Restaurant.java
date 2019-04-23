@@ -178,6 +178,7 @@ public class Restaurant extends Fragment {
 
                     //adding each restaurant to my list
                     restaurantList.add(restaurantModel);
+                    return restaurantList;
 
                 }
 
