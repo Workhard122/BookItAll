@@ -15,8 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -77,10 +79,12 @@ public class Restaurant extends Fragment {
 
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
-        initImageBitmaps(rootView);
+       // initImageBitmaps(rootView);
+      StringBuilder urlString = new StringBuilder("https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Plattsburgh&key=AIzaSyA7dGiFuWEqIou04m5IxOzs_62IxzKo83I");
+        new DownloadFilesTask().execute(urlString.toString());
+
+
         return rootView;
-
-
 
 
     }
@@ -127,74 +131,61 @@ public class Restaurant extends Fragment {
     //my data container
     private static final String TAG = "RestaurantActivity";
 
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mTypes = new ArrayList<>();
-    private ArrayList<String> mDescriptions = new ArrayList<>();
 
-
-    //recyclerView code
-    private void initImageBitmaps(View rootView){
-        Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
-
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Havasu Falls");
-
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Trondheim");
-
-        mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Portugal");
-
-        mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Rocky Mountain National Park");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-
-        initRecyclerView(rootView);
-
-    }
-
-    private void initRecyclerView(View rootView) {
+    private void initRecyclerView(List<RestaurantModel> restaurants) {
         Log.d(TAG, "initRecyclerView: init recyclerview");
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mImageUrls, mNames, mTypes, mDescriptions);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (restaurants != null) {
+            RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), restaurants);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
     }
 
-    private class DownloadFilesTask extends AsyncTask<URL, Void, String> {
+    private class DownloadFilesTask extends AsyncTask<String, Void, List<RestaurantModel>> {
 
         @Override
-        protected String doInBackground(URL... urls) {
-            URL myUrl = urls[0];
-            String jsonString;
-            HttpHandler myhandler = new HttpHandler();
-            jsonString = myhandler.makeServiceCall(myUrl.toString());
+        protected List<RestaurantModel> doInBackground(String... urls) {
 
             try {
+                List<RestaurantModel> restaurantList = new ArrayList<RestaurantModel>();
+                URL myUrl = new URL(urls[0]);
+                String jsonString;
+                HttpHandler myhandler = new HttpHandler();
+                jsonString = myhandler.makeServiceCall(myUrl.toString());
+
                 JSONObject parentObject = new JSONObject(jsonString);
-                JSONArray parentArray = parentObject.getJSONArray("movies");
+                JSONArray parentArray = parentObject.getJSONArray("results");
+
+                for (int i=0; i < parentArray.length(); i++){
+                    RestaurantModel restaurantModel = new RestaurantModel();
+                    JSONObject currentObject = parentArray.getJSONObject(i);
+
+                    //String name = currentObject.getString("name");
+                    restaurantModel.name = currentObject.getString("name");
+                    restaurantModel.imageUrl = currentObject.getString("icon");
+
+                    //restaurantModel.type = currentObject.getString("type");
+                    JSONArray typeArray = currentObject.getJSONArray("types");
+                    restaurantModel.type = new String[typeArray.length()];
+
+                    for (int k = 0; k < typeArray.length(); k++){
+                        restaurantModel.type[k] = typeArray.getString(k);
+                    }
+
+
+
+                    //adding each restaurant to my list
+                    restaurantList.add(restaurantModel);
+
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-
 
 
             return null;
@@ -204,8 +195,8 @@ public class Restaurant extends Fragment {
 
         }
 
-        protected void onPostExecute(Long result) {
-            initRecyclerView(rootView);
+        protected void onPostExecute(List<RestaurantModel> result) {
+            initRecyclerView(result);
         }
 
     }//end of asynctask
@@ -214,3 +205,5 @@ public class Restaurant extends Fragment {
 
 
 }//end of fragement
+
+//https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Plattsburgh&key=AIzaSyA7dGiFuWEqIou04m5IxOzs_62IxzKo83I

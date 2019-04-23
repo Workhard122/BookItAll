@@ -54,7 +54,8 @@ public class HttpHandler {
             e.printStackTrace();
         } finally {
             try {
-                is.close();
+                if (is != null) {  is.close();}
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

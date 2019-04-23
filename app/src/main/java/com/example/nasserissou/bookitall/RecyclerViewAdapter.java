@@ -15,24 +15,23 @@ import com.bumptech.glide.Glide;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  {
 
     private static final String TAG = "RecyclerViewAdapter";
-
+/*
     private ArrayList<String> mImageNames = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
     private ArrayList<String> mTypes = new ArrayList<>();
     private ArrayList<String> mDescriptions = new ArrayList<>();
+*/
+    private List<RestaurantModel> mRestaurents;
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImages, ArrayList<String> mImageNames, ArrayList<String> mTypes, ArrayList<String> mDescriptions ) {
+    public RecyclerViewAdapter(Context mContext, List<RestaurantModel> restaurants) {
         this.mContext = mContext;
-        this.mImages = mImages;
-        this.mImageNames = mImageNames;
-        this.mTypes = mTypes;
-        this.mDescriptions = mDescriptions;
-
+        this.mRestaurents = restaurants;
 
     }
 
@@ -50,23 +49,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImages.get(position))
+                .load(mRestaurents.get(position).imageUrl)
                 .into(holder.image);
 
-        holder.imageName.setText(mImageNames.get(position));
+        holder.imageName.setText(mRestaurents.get(position).name);
 
-        holder.type.setText(mTypes.get(position));
+        StringBuffer stringBuffer = new StringBuffer();
+        for( String s : mRestaurents.get(position).type )
+        {
+            stringBuffer.append(s);
+        }
+        holder.type.setText(stringBuffer);
 
-        holder.description.setText(mDescriptions.get(position));
+        holder.description.setText("Description");
 
 
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on : " + mImageNames.get(position));
+                Log.d(TAG, "onClick: clicked on : " + mRestaurents.get(position));
 
-                Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mRestaurents.get(position).name, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -77,7 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mImageNames.size();
+        return mRestaurents.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
