@@ -61,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         holder.type.setText(stringBuffer);
 
-        holder.description.setText("Description");
+        holder.description.setText("Description: " + mRestaurents.size());
 
 
 

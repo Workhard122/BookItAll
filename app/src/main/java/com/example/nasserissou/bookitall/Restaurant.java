@@ -81,7 +81,7 @@ public class Restaurant extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
        // initImageBitmaps(rootView);
       StringBuilder urlString = new StringBuilder("https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Plattsburgh&key=AIzaSyA7dGiFuWEqIou04m5IxOzs_62IxzKo83I");
-        new DownloadFilesTask().execute(urlString.toString());
+      new DownloadFilesTask().execute(urlString.toString());
 
 
         return rootView;
@@ -136,9 +136,10 @@ public class Restaurant extends Fragment {
         Log.d(TAG, "initRecyclerView: init recyclerview");
         if (restaurants != null) {
             RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), restaurants);
             recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         }
 
     }
@@ -174,14 +175,11 @@ public class Restaurant extends Fragment {
                         restaurantModel.type[k] = typeArray.getString(k);
                     }
 
-
-
                     //adding each restaurant to my list
                     restaurantList.add(restaurantModel);
-                    return restaurantList;
 
                 }
-
+                return restaurantList;
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
