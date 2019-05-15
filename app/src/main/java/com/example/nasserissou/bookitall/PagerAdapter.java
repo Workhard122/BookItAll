@@ -3,8 +3,6 @@ package com.example.nasserissou.bookitall;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.example.nasserissou.bookitall.Movies;
-import com.example.nasserissou.bookitall.Restaurant;
 
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -27,8 +25,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return restaurant;
 
             case 1:
-                Movies movies = new Movies();
-                return movies;
+                Events events = new Events();
+                return events;
 
             default:
                 return null;

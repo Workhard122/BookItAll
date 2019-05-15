@@ -5,15 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.TableLayout;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity implements Movies.OnFragmentInteractionListener, Restaurant.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements Events.OnFragmentInteractionListener, Restaurant.OnFragmentInteractionListener{
 
 
 
@@ -25,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements Movies.OnFragment
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Restaurants"));
-        tabLayout.addTab(tabLayout.newTab().setText("Movies"));
+        tabLayout.addTab(tabLayout.newTab().setText("Events"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);

@@ -20,12 +20,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  {
 
     private static final String TAG = "RecyclerViewAdapter";
-/*
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
-    private ArrayList<String> mTypes = new ArrayList<>();
-    private ArrayList<String> mDescriptions = new ArrayList<>();
-*/
+
     private List<RestaurantModel> mRestaurents;
     private Context mContext;
 
